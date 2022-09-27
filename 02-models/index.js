@@ -12,12 +12,12 @@ require('dotenv').config();
 const POSTGRS_URL = process.env.DATABASE_URL;
 
 const sequelizeOption = {
-//   dialectOptions: {
-//     ssl: {
-//       require: false,
-//       rejectUnauthorized: false,
-//     },
-//   },
+  dialectOptions: {
+    ssl: {
+      require: false,
+      rejectUnauthorized: false,
+    },
+  },
 };
 const sequelize = new Sequelize(POSTGRS_URL, sequelizeOption);
 
