@@ -1,15 +1,13 @@
 'use strict';
 
 const { Sequelize, DataTypes } = require('sequelize');
-const { createPostModel } = require('./post.model');
 const { createCommentModel } = require('./comment.model');
+const { createPostModel } = require('./post.model');
 const { createUserModel } = require('./user.model');
-
 require('dotenv').config();
 
 
-
-const POSTGRS_URL = process.env.DATABASE_URL;
+const POSTGRES_URL = process.env.DATABASE_URL;
 
 const sequelizeOption = {
   dialectOptions: {
@@ -19,16 +17,12 @@ const sequelizeOption = {
     },
   },
 };
-const sequelize = new Sequelize(POSTGRS_URL, sequelizeOption);
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Database connected to postgres DBMS");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const sequelize = new Sequelize(POSTGRES_URL, sequelizeOption);
+
+sequelize.authenticate()
+  .then(() => { console.log(` Connected to DMBS`) })
+  .catch((reject) => { console.log(`Rejected : ${reject}`) });
 
 
 const postModel = createPostModel(sequelize, DataTypes);
@@ -41,10 +35,9 @@ commentModel.belongsTo(postModel, { foreignKey: "postId", targetKey: "id" });
 userModel.hasMany(commentModel, { foreignKey: "userId", sourceKey: "id" });
 commentModel.belongsTo(userModel, { foreignKey: "userId", targetKey: "id" });
 
-
-
-
-
-
+userModel.hasMany(postModel, { foreignKey: "userId", sourceKey: "id" });
+postModel.belongsTo(userModel, { foreignKey: "userId", targetKey: "id" });
 
 module.exports = { sequelize, postModel, commentModel, userModel };
+
+
