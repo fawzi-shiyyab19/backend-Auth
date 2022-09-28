@@ -1,14 +1,13 @@
 'use strict';
 
 function errorHandler(err, req, res, next) {
-  res.status(500).send(
+  res.status(500).json(
     {
       code: 500,
-      message: err
+      message: err,
     }
   );
 }
-
 
 
 

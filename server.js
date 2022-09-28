@@ -2,36 +2,29 @@
 
 const express = require('express');
 const cors = require('cors');
-const { noRouteExist } = require('./00-error-handlers/404');
-const { errorHandler } = require('./00-error-handlers/500');
-const postRouters = require('./01-routes/post.route');
-const commentRouters = require('./01-routes/comment.route');
-const userRouters = require('./01-routes/user.route');
+const { notFound } = require('./02-error-handlers/404');
+const { errorHandler } = require('./02-error-handlers/500');
+const postRoutes = require('./00-routes/post.route');
+const commentRoutes = require('./00-routes/comment.route');
+const userRoutes = require('./00-routes/user.route');
+require('dotenv').config();
 
 const app = express();
-
-
 app.use(cors());
 app.use(express.json());
 
+app.use(postRoutes);
+app.use(commentRoutes);
+app.use(userRoutes);
 
-app.use(postRouters);
-app.use(commentRouters);
-app.use(userRouters);
+app.get('/', (req, res) => res.status(200).json(`Main page`));
 
-
-app.get('/', (req, res) => {
-  res.send(`main route`);
-});
-
-
-
-
-app.use('*', noRouteExist);
-app.use(errorHandler);
-
-function start(port) {
-  app.listen(port, () => { console.log(`Up and running at ${port}`) });
+function serverStart(port) {
+  app.listen(port, () => console.log(`Up and running @ ${port}`));
 }
 
-module.exports = { start };
+app.use('*', notFound);
+app.use(errorHandler);
+
+
+module.exports = { serverStart };
