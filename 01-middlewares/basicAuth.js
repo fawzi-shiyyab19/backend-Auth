@@ -18,7 +18,9 @@ async function basicAuth(req, res, next) {
       if (checkPassword) {
         const token = jwt.sign({ meow: user.username }, process.env.SECRET);
         user.token = token;
+        user.role = user.role;
         req.signedUser = user;
+        
         next();
       } else {
         res.status(403).send('Password is incorrect');
