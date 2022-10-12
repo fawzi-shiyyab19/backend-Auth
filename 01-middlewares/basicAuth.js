@@ -13,14 +13,15 @@ async function basicAuth(req, res, next) {
     let decodedData = base64.decode(encodedData);     // username:password
     let [username, password] = decodedData.split(':');
     let user = await userModel.findOne({ where: { username } });
+
     if (user) {
       let checkPassword = await bcrypt.compare(password, user.password);
       if (checkPassword) {
-        const token = jwt.sign({ meow: user.username }, process.env.SECRET);
+        const token = jwt.sign({ fawzi: user.username }, process.env.SECRET);
         user.token = token;
         user.role = user.role;
+        user.capabilities = user.actions
         req.signedUser = user;
-        
         next();
       } else {
         res.status(403).send('Password is incorrect');

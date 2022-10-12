@@ -1,6 +1,6 @@
 'use strict';
 
-const { Sequelize, DataTypes } = require('sequelize');
+const {Sequelize, DataTypes } = require('sequelize');
 const { createCommentModel } = require('./comment.model');
 const { createPostModel } = require('./post.model');
 const { createUserModel } = require('./user.model');
@@ -39,5 +39,3 @@ userModel.hasMany(postModel, { foreignKey: "userId", sourceKey: "id" });
 postModel.belongsTo(userModel, { foreignKey: "userId", targetKey: "id" });
 
 module.exports = { sequelize, postModel, commentModel, userModel };
-
-
