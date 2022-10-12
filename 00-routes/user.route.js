@@ -28,7 +28,8 @@ async function signin(req, res, next) {
       user: {
         _id: req.signedUser.id,
         username: req.signedUser.username,
-        role: req.signedUser.role
+        role: req.signedUser.role,
+        capabilities: req.signedUser.capabilities
       },
       token: req.signedUser.token,
     }
